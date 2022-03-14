@@ -8,7 +8,7 @@ public class Product {
     private int prix;
 
     //information que nous ne souhaitons pas exposer
-
+    @JsonIgnore
     private int prixAchat;
 
     public int getId() {
