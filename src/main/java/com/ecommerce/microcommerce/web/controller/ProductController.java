@@ -2,7 +2,11 @@ package com.ecommerce.microcommerce.web.controller;
 
 import com.ecommerce.microcommerce.dao.ProductDAO;
 import com.ecommerce.microcommerce.model.Product;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -24,9 +28,36 @@ public class ProductController {
         this.productDAO = productDAO;
     }
 
+    /**
+     * SimpleBeanPropertyFilter est une implémentation de PropertyFilter qui permet d'établir les règles de filtrage sur un Bean donné.
+     * La règle serializeAllExcept("") qui exclut uniquement les propriétés que nous souhaitons ignorer.
+     * Inversement, vous pouvez procéder avec la méthode filterOutAllExcept qui marque toutes les propriétés comme étant à ignorer,
+     * sauf celles passées en argument.
+     * Maintenant que nous avons établi notre règle de filtrage, la ligne suivante nous permet d'indiquer à Jackson à quel Bean
+     * l'appliquer. Nous utilisons SimpleFilterProvider pour déclarer que les règles de filtrage que nous avons créées (monFiltre)
+     * peuvent s'appliquer à tous les Beans qui sont annotés avec monFiltreDynamique.
+     * Jusqu'à présent, nous n'avons encore rien filtré concrètement ! Nous avons établi la règle et indiqué que cette règle
+     * ne s'applique qu'aux Beans qui sont annotés avec monFiltreDynamique, mais nous ne l'avons pas encore appliquée.
+     * Pour cela, nous les mettons au format MappingJacksonValue. Cela permet de donner accès aux méthodes qui nous intéressent,
+     * comme setFilters qui applique les filtres que nous avons établis à la liste de Product.
+     * Nous retournons ensuite la liste filtrée. Ne vous inquiétez pas si vous devez renvoyer MappingJacksonValue,
+     * car ce n'est qu'un simple "conteneur" qui ne change absolument rien au contenu. MappingJacksonValue est donc exactement
+     * comme produits, avec des méthodes de filtrage en plus.
+     */
+    //Récupérer la liste des produits par filtre
+    //Nous savons appliquer des filtres sur notre API grâce à Jackson.
     @GetMapping("/Produits")
-    public List<Product> listeProduits(){
-       return productDAO.findAll();
+    public MappingJacksonValue listeProduits(){
+        List<Product> produits = productDAO.findAll();
+
+        SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.serializeAllExcept("prixAchat","id");
+
+        FilterProvider listDeNosFiltres = new SimpleFilterProvider().addFilter("monFiltreDynamique", monFiltre);
+
+        MappingJacksonValue produitsFiltres = new MappingJacksonValue(produits);
+
+        produitsFiltres.setFilters(listDeNosFiltres);
+        return produitsFiltres;
     }
 
     /**
@@ -47,6 +78,7 @@ public class ProductController {
      * Nous ajoutons ensuite l'Id du produit à l'URI à l'aide de la méthode buildAndExpand. Nous retrouvons l'Id dans l'instance de Product que nous avons reçu : productAdded.getId().
      * Enfin, nous invoquons la méthode created de ResponseEntity, qui accepte comme argument l'URI de la ressource nouvellement créée, et renvoie le code de statut 201.
      */
+    //Nous avons remplacé les types de retour pour rendre notre application cohérente avec la norme, grâce à ResponseEntity.
     @PostMapping(value = "/Produits")
     public ResponseEntity<Product> ajouterProduit(@RequestBody Product product) {
         Product productAdded = productDAO.save(product);

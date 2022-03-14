@@ -1,7 +1,8 @@
 package com.ecommerce.microcommerce.model;
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties(value = {"id","prixAchat"})
+@JsonFilter("monFiltreDynamique")
 public class Product {
     private int id;
     private String nom;
