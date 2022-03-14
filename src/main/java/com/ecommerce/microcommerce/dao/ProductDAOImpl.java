@@ -9,9 +9,9 @@ import java.util.List;
 public class ProductDAOImpl implements ProductDAO{
     public static List<Product> products = new ArrayList<>();
     static {
-        products.add(new Product(1,"Ordinateur portable",650));
-        products.add(new Product(2,"Aspirateur Robot",500));
-        products.add(new Product(3,"Table de billard",800));
+        products.add(new Product(1,"Ordinateur portable",650,400));
+        products.add(new Product(2,"Aspirateur Robot",500,250));
+        products.add(new Product(3,"Table de billard",800,600));
     }
 
     @Override

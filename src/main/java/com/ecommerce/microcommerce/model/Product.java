@@ -1,15 +1,15 @@
 package com.ecommerce.microcommerce.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Product {
     private int id;
     private String nom;
     private int prix;
 
-    public Product(int id, String nom, int prix) {
-        this.id = id;
-        this.nom = nom;
-        this.prix = prix;
-    }
+    //information que nous ne souhaitons pas exposer
+
+    private int prixAchat;
 
     public int getId() {
         return id;
@@ -34,6 +34,21 @@ public class Product {
     public void setPrix(int prix) {
         this.prix = prix;
 
+    }
+
+    public Product(int id, String nom, int prix, int prixAchat) {
+        this.id = id;
+        this.nom = nom;
+        this.prix = prix;
+        this.prixAchat = prixAchat;
+    }
+
+    public int getPrixAchat() {
+        return prixAchat;
+    }
+
+    public void setPrixAchat(int prixAchat) {
+        this.prixAchat = prixAchat;
     }
 
     @Override
