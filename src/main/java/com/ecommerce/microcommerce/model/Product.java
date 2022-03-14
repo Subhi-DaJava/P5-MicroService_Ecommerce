@@ -1,7 +1,8 @@
 package com.ecommerce.microcommerce.model;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
+///Elle demande à ce que prixAchat et id ne soient pas renvoyés en cas de requête pour récupérer l'entité/le Bean correspondant.
+//@JsonIgnoreProperties(value = "prixAchat", "id")
 @JsonFilter("monFiltreDynamique")
 public class Product {
     private int id;
