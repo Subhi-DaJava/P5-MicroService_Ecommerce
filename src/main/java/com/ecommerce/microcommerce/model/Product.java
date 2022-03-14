@@ -1,14 +1,13 @@
 package com.ecommerce.microcommerce.model;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+@JsonIgnoreProperties(value = {"id","prixAchat"})
 public class Product {
     private int id;
     private String nom;
     private int prix;
 
     //information que nous ne souhaitons pas exposer
-    @JsonIgnore
     private int prixAchat;
 
     public int getId() {
