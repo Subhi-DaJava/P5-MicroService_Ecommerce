@@ -1,15 +1,28 @@
 package com.ecommerce.microcommerce.web.controller;
 
+import com.ecommerce.microcommerce.dao.ProductDAO;
 import com.ecommerce.microcommerce.model.Product;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class ProductController {
+    //Même pas besoin de spécifier son implémentation(ProductDAO -> ProductDAOImpl)
+    /**
+     * Tout d'abord, nous avons créé une variable de type ProductDao, que nous avons définie en private final afin que
+     * Spring se charge d'en fabriquer une instance que nous injectons dans le constructeur. ProductDao a désormais accès à toutes les méthodes
+     * que nous avons définies.
+     */
+    private final ProductDAO productDAO;
+
+    public ProductController(ProductDAO productDAO) {
+        this.productDAO = productDAO;
+    }
+
     @GetMapping("/Produits")
-    public String listeProduits(){
-       return "Un exemple de produits";
+    public List<Product> listeProduits(){
+       return productDAO.findAll();
     }
 
     /**
@@ -18,10 +31,12 @@ public class ProductController {
      * @return
      */
     //Récupérer un produit par son Id
-    @GetMapping(value = "Produits/{id}")
+    @GetMapping(value = "/Produits/{id}")
     public Product afficherUnProduit(@PathVariable int id){
-        Product product = new Product(id,"Aspirateur",100);
-        return product;
-        //return product = new Product(id, new String("Aspirateur"), 100);
+        return productDAO.findById(id);
+    }
+    @PostMapping("/Produits")
+    public void ajouteProduit(@RequestBody Product product) {
+        productDAO.save(product);
     }
 }
