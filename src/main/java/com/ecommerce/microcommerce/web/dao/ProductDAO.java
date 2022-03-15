@@ -1,13 +1,15 @@
 package com.ecommerce.microcommerce.web.dao;
 
-import com.ecommerce.microcommerce.web.model.Product;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import com.ecommerce.microcommerce.web.model.Product;
 
 import java.util.List;
 
 @Repository
-public interface ProductDAO extends JpaRepository<Product,Integer> {
+public interface ProductDAO extends JpaRepository<Product, Integer> {
     //Notre méthode
     /*
     Les conventions ! Spring Data JPA propose un ensemble de conventions qui lui permettront de

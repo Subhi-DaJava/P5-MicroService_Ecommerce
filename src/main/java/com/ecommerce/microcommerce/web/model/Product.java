@@ -1,4 +1,5 @@
 package com.ecommerce.microcommerce.web.model;
+
 import com.fasterxml.jackson.annotation.JsonFilter;
 
 import javax.persistence.Entity;
@@ -10,8 +11,9 @@ import javax.persistence.Id;
 //@JsonFilter("monFiltreDynamique")
 @Entity
 public class Product {
+
+    //@GeneratedValue //(strategy = GenerationType.IDENTITY)
     @Id
-    @GeneratedValue //(strategy = GenerationType.IDENTITY)
     private int id;
     private String nom;
     private int prix;

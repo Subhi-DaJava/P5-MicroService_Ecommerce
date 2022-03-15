@@ -1,7 +1,9 @@
 package com.ecommerce.microcommerce.web.controller;
 
+
 import com.ecommerce.microcommerce.web.dao.ProductDAO;
 import com.ecommerce.microcommerce.web.model.Product;
+
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
@@ -23,8 +25,11 @@ public class ProductController {
      * Spring se charge d'en fabriquer une instance que nous injectons dans le constructeur. ProductDao a désormais accès à toutes les méthodes
      * que nous avons définies.
      */
-    @Autowired
-    private ProductDAO productDAO;
+
+    private final ProductDAO productDAO;
+    public ProductController(ProductDAO productDAO) {
+    	this.productDAO = productDAO;
+    }
     /**
      * SimpleBeanPropertyFilter est une implémentation de PropertyFilter qui permet d'établir les règles de filtrage sur un Bean donné.
      * La règle serializeAllExcept("") qui exclut uniquement les propriétés que nous souhaitons ignorer.
