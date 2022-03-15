@@ -5,6 +5,7 @@ import com.ecommerce.microcommerce.model.Product;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +23,8 @@ public class ProductController {
      * Spring se charge d'en fabriquer une instance que nous injectons dans le constructeur. ProductDao a désormais accès à toutes les méthodes
      * que nous avons définies.
      */
-    private final ProductDAO productDAO;
-
-    public ProductController(ProductDAO productDAO) {
-        this.productDAO = productDAO;
-    }
-
+    @Autowired
+    private ProductDAO productDAO;
     /**
      * SimpleBeanPropertyFilter est une implémentation de PropertyFilter qui permet d'établir les règles de filtrage sur un Bean donné.
      * La règle serializeAllExcept("") qui exclut uniquement les propriétés que nous souhaitons ignorer.
@@ -46,11 +43,15 @@ public class ProductController {
      */
     //Récupérer la liste des produits par filtre
     //Nous savons appliquer des filtres sur notre API grâce à Jackson.
-    @GetMapping("/Produits")
+    @RequestMapping(value = "/Produits", method = RequestMethod.GET)
     public MappingJacksonValue listeProduits(){
-        List<Product> produits = productDAO.findAll();
-
-        SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.serializeAllExcept("prixAchat","id");
+        /*
+        Parmi les opérations qu'offre JpaRepository, nous trouvons findAll() qui permet de récupérer toutes les données
+        de l'entité concernée. findAll() retourne un Iterable, qu'il nous faut spécifier comme type de retour de la méthode.
+        Dans notre cas, le type de retour est bien un Iterable, puisque nous retournons une réponse filtrée de type MappingJacksonValue.
+        */
+        Iterable<Product> produits = productDAO.findAll();
+        SimpleBeanPropertyFilter monFiltre = SimpleBeanPropertyFilter.serializeAllExcept("prixAchat");
 
         FilterProvider listDeNosFiltres = new SimpleFilterProvider().addFilter("monFiltreDynamique", monFiltre);
 
@@ -64,10 +65,10 @@ public class ProductController {
      * URI "/Produits/{id}", renvoyer un produit au format JSON qui correspond à la classe Product.
      */
     //Récupérer un produit par son Id
-    @GetMapping(value = "/Produits/{id}")
+    /*@GetMapping(value = "/Produits/{id}")
     public Product afficherUnProduit(@PathVariable int id){
         return productDAO.findById(id);
-    }
+    }*/
 
     /**
      *Dans un premier temps, nous faisons appel à la DAO pour ajouter le produit. Dans le cas où le produit ajouté est vide ou n'existe pas, nous retournons le code 204 No Content.
@@ -79,7 +80,7 @@ public class ProductController {
      * Enfin, nous invoquons la méthode created de ResponseEntity, qui accepte comme argument l'URI de la ressource nouvellement créée, et renvoie le code de statut 201.
      */
     //Nous avons remplacé les types de retour pour rendre notre application cohérente avec la norme, grâce à ResponseEntity.
-    @PostMapping(value = "/Produits")
+   /* @PostMapping(value = "/Produits")
     public ResponseEntity<Product> ajouterProduit(@RequestBody Product product) {
         Product productAdded = productDAO.save(product);
         if (Objects.isNull(productAdded)) {
@@ -91,5 +92,5 @@ public class ProductController {
                 .buildAndExpand(productAdded.getId())
                 .toUri();
         return ResponseEntity.created(location).build();
-    }
+    }*/
 }
