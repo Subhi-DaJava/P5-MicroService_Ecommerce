@@ -1,7 +1,7 @@
 package com.ecommerce.microcommerce.web.controller;
 
-import com.ecommerce.microcommerce.dao.ProductDAO;
-import com.ecommerce.microcommerce.model.Product;
+import com.ecommerce.microcommerce.web.dao.ProductDAO;
+import com.ecommerce.microcommerce.web.model.Product;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
@@ -84,7 +84,7 @@ public class ProductController {
     GreaterThan : définit une condition "plus grand que".
      */
     @GetMapping(value = "test/Produits/{prixLimit}")
-    public List<Product> testDeRequestes(@PathVariable int prixLimit){
+    public List<Product> testDeRequetes(@PathVariable int prixLimit){
         return productDAO.findByPrixGreaterThan(prixLimit);
     }
 
@@ -99,7 +99,7 @@ public class ProductController {
      * Enfin, nous invoquons la méthode created de ResponseEntity, qui accepte comme argument l'URI de la ressource nouvellement créée, et renvoie le code de statut 201.
      */
     //Nous avons remplacé les types de retour pour rendre notre application cohérente avec la norme, grâce à ResponseEntity.
-   /* @PostMapping(value = "/Produits")
+    @PostMapping(value = "/Produits")
     public ResponseEntity<Product> ajouterProduit(@RequestBody Product product) {
         Product productAdded = productDAO.save(product);
         if (Objects.isNull(productAdded)) {
@@ -111,5 +111,5 @@ public class ProductController {
                 .buildAndExpand(productAdded.getId())
                 .toUri();
         return ResponseEntity.created(location).build();
-    }*/
+    }
 }

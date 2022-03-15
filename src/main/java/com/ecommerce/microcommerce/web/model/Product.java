@@ -1,4 +1,4 @@
-package com.ecommerce.microcommerce.model;
+package com.ecommerce.microcommerce.web.model;
 import com.fasterxml.jackson.annotation.JsonFilter;
 
 import javax.persistence.Entity;
