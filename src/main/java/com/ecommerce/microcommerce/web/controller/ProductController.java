@@ -1,7 +1,7 @@
 package com.ecommerce.microcommerce.web.controller;
 
-import com.ecommerce.microcommerce.dao.ProductDAO;
-import com.ecommerce.microcommerce.model.Product;
+import com.ecommerce.microcommerce.web.dao.ProductDAO;
+import com.ecommerce.microcommerce.web.model.Product;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
