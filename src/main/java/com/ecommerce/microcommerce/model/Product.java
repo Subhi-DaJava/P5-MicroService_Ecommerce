@@ -7,7 +7,7 @@ import javax.persistence.Id;
 
 ///Elle demande à ce que prixAchat et id ne soient pas renvoyés en cas de requête pour récupérer l'entité/le Bean correspondant.
 //@JsonIgnoreProperties(value = "prixAchat", "id")
-@JsonFilter("monFiltreDynamique")
+//@JsonFilter("monFiltreDynamique")
 @Entity
 public class Product {
     @Id

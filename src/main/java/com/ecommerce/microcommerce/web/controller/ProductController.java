@@ -65,10 +65,29 @@ public class ProductController {
      * URI "/Produits/{id}", renvoyer un produit au format JSON qui correspond à la classe Product.
      */
     //Récupérer un produit par son Id
-    /*@GetMapping(value = "/Produits/{id}")
+    /*
+    La magie de Spring Data va au-delà des requêtes CRUD. Le framework est capable de générer
+    la requête SQL automatiquement en partant du nom de votre méthode !
+    findById(id) est créée par nous même
+     */
+    @GetMapping(value = "/Produits/{id}")
     public Product afficherUnProduit(@PathVariable int id){
         return productDAO.findById(id);
-    }*/
+    }
+    /*
+    Les conventions ! Spring Data JPA propose un ensemble de conventions qui lui permettront de déduire
+    la bonne requête à partir du nom de la méthode.
+    Prenons comme exemple la récupération des produits dont le prix est supérieur à 400. Commençons par ajouter
+    une méthode findByPrixGreaterThan au Repository, à l'intérieur de la définition de l'interface ProductDAO : List<Product> findByPrixGreaterThan(int prixLimit);
+    findBy : indique que l'opération à exécuter est un SELECT.
+    Prix : fournit le nom de la propriété sur laquelle le SELECT s'applique.
+    GreaterThan : définit une condition "plus grand que".
+     */
+    @GetMapping(value = "test/Produits/{prixLimit}")
+    public List<Product> testDeRequestes(@PathVariable int prixLimit){
+        return productDAO.findByPrixGreaterThan(prixLimit);
+    }
+
 
     /**
      *Dans un premier temps, nous faisons appel à la DAO pour ajouter le produit. Dans le cas où le produit ajouté est vide ou n'existe pas, nous retournons le code 204 No Content.
