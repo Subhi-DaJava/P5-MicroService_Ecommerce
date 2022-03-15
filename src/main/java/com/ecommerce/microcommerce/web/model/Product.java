@@ -1,4 +1,5 @@
 package com.ecommerce.microcommerce.web.model;
+
 import com.fasterxml.jackson.annotation.JsonFilter;
 
 import javax.persistence.Entity;
@@ -8,10 +9,12 @@ import javax.persistence.Id;
 ///Elle demande à ce que prixAchat et id ne soient pas renvoyés en cas de requête pour récupérer l'entité/le Bean correspondant.
 //@JsonIgnoreProperties(value = "prixAchat", "id")
 //@JsonFilter("monFiltreDynamique")
+
 @Entity
 public class Product {
-    @Id
-    @GeneratedValue //(strategy = GenerationType.IDENTITY)
+    
+    //@GeneratedValue //(strategy = GenerationType.IDENTITY)
+	@Id
     private int id;
     private String nom;
     private int prix;
